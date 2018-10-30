@@ -3,6 +3,7 @@ package com.example.aps.listacompras;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -16,15 +17,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
+                    selectedFragment = new HomeFragmentTab();
+                    break;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
+                    selectedFragment = new FormProductFragmentTab();
+                    break;
             }
-            return false;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment);
+            return true;
         }
     };
 
