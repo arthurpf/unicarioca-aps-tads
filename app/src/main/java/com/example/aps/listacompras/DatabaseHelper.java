@@ -22,8 +22,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE + "(" + ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + NAME + " TEXT, "
-            + QTY + " INT, "
-            + VALUE +"  );";
+            + QTY + " INTEGER, "
+            + VALUE +" FLOAT );";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,11 +42,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long addStudentDetail(String student) {
+    public long addProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
         // Creating content values
         ContentValues values = new ContentValues();
-        values.put(ID, student);
+        values.put(NAME, product.getName());
+        values.put(QTY, product.getQuantity());
+        values.put(VALUE, product.getValue());
         // insert row in students table
         long insert = db.insert(TABLE, null, values);
 
@@ -55,14 +57,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> getProducstsList() {
         ArrayList<String> studentsArrayList = new ArrayList<String>();
-        String name="";
         String selectQuery = "SELECT  * FROM " + TABLE;
+        String name;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
+        // looping through all rows and adding to listgetProducstsList
         if (c.moveToFirst()) {
             do {
-                name = c.getString(c.getColumnIndex(ID));
+                name = c.getString(c.getColumnIndex(NAME));
+                //quantity = c.getString(c.getColumnIndex(QTY));
+                //value = c.getString(c.getColumnIndex(VALUE));
+                //product = new Product(name, quantity, value);
+
                 // adding to Students list
                 studentsArrayList.add(name);
             } while (c.moveToNext());
